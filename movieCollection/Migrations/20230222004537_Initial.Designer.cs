@@ -8,7 +8,7 @@ using movieCollection.Models;
 namespace movieCollection.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20230214051303_Initial")]
+    [Migration("20230222004537_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,15 +17,40 @@ namespace movieCollection.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("movieCollection.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Drama"
+                        });
+                });
+
             modelBuilder.Entity("movieCollection.Models.MovieResponse", b =>
                 {
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +79,15 @@ namespace movieCollection.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Movies");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            Category = "Action/Adventure",
+                            CategoryId = 1,
                             Director = "Christopher Nolan",
                             Edited = false,
                             LentTo = "Your Mom",
@@ -72,7 +99,7 @@ namespace movieCollection.Migrations
                         new
                         {
                             MovieId = 2,
-                            Category = "Action/Adventure",
+                            CategoryId = 1,
                             Director = "Jon Favreau",
                             Edited = false,
                             LentTo = "Your Dad",
@@ -84,7 +111,7 @@ namespace movieCollection.Migrations
                         new
                         {
                             MovieId = 3,
-                            Category = "Drama",
+                            CategoryId = 2,
                             Director = "Frank Darabont",
                             Edited = true,
                             LentTo = "Bill",
@@ -93,6 +120,15 @@ namespace movieCollection.Migrations
                             Rating = "R",
                             Year = 1994
                         });
+                });
+
+            modelBuilder.Entity("movieCollection.Models.MovieResponse", b =>
+                {
+                    b.HasOne("movieCollection.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

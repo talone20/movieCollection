@@ -16,14 +16,28 @@ namespace movieCollection.Models
         }
 
         public DbSet<MovieResponse> Movies { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
+
+        //Seeding the data
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CategoryId=1, CategoryName="Action/Adventure"},
+                new Category { CategoryId=2, CategoryName="Drama"},
+                new Category { CategoryId = 3, CategoryName = "Comedy" },
+                new Category { CategoryId = 4, CategoryName = "Family" },
+                new Category { CategoryId = 5, CategoryName = "Horror/Suspense" },
+                new Category { CategoryId = 6, CategoryName = "Miscellaneous" },
+                new Category { CategoryId = 7, CategoryName = "Television" },
+                new Category { CategoryId = 8, CategoryName = "VHS" }
+                );
+
             mb.Entity<MovieResponse>().HasData(
                 new MovieResponse
                 {
                     MovieId = 1,
-                    Category = "Action/Adventure",
+                    CategoryId = 1,
                     MovieTitle = "Dark Knight, The",
                     Year = 2008,
                     Director = "Christopher Nolan",
@@ -35,7 +49,7 @@ namespace movieCollection.Models
                 new MovieResponse
                 {
                     MovieId = 2,
-                    Category = "Action/Adventure",
+                    CategoryId = 1,
                     MovieTitle = "Iron Man",
                     Year = 2008,
                     Director = "Jon Favreau",
@@ -47,7 +61,7 @@ namespace movieCollection.Models
                 new MovieResponse
                 {
                     MovieId = 3,
-                    Category = "Drama",
+                    CategoryId = 2,
                     MovieTitle = "Shawshank Redemption, The",
                     Year = 1994,
                     Director = "Frank Darabont",

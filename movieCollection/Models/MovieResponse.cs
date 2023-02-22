@@ -11,8 +11,13 @@ namespace movieCollection.Models
         [Key]
         [Required]
         public int MovieId { get; set; }
+
+        // Build foreign key relationship
         [Required]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        // The rest of the table variables
         [Required]
         public string MovieTitle { get; set; }
         [Required]
